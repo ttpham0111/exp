@@ -1,52 +1,26 @@
-import { Experience } from '@/models/Experience'
-import {
-  Event,
-  EventType
-} from '@/models/Event'
-import ExperiencesService from '@/services/ExperiencesService'
-
 export default {
   namespaced: true,
 
   state: {
-    experiences: [
-      new Experience({
-        id: 'sf',
-        title: 'San Francisco Trip',
-        events: [
-          new Event({
-            name: 'Enter The Cafe',
-            type: EventType.DINING
-          })
-        ]
-      }),
-
-      new Experience({
-        id: 'la',
-        title: 'Weekend in Los Angelos',
-        events: [
-          new Event({
-            name: 'Sake2Me Sushi',
-            type: EventType.DINING
-          }),
-          new Event({
-            name: 'Laguna Beach',
-            type: EventType.OTHER
-          })
-        ]
-      })
-    ]
+    initialized: false,
+    experiences: [],
+    experienceIdLookup: {},
+    eventIdLookup: {}
   },
 
   mutations: {
+    init(state) {
+      state.initialized = true
+    },
+
     create(state, experience) {
       state.experiences.push(experience)
-    }
-  },
+      state.experienceIdLookup[experience.id] = experience
+    },
 
-  actions: {
-    create(context, experience) {
-      ExperiencesService.create(experience)
+    addEvent(state, experienceId, event) {
+      state.experienceIdLookup[experienceId].events.push(event)
+      state.eventIdLookup[event.id] = event
     }
   }
 }

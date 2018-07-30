@@ -29,6 +29,14 @@ const compiler = webpack(webpackConfig)
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
+  stats: {
+    colors: true,
+    chunks: false
+  },
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
+  },
   quiet: true
 })
 
@@ -56,6 +64,8 @@ Object.keys(proxyTable).forEach(function (context) {
   app.use(proxyMiddleware(options.filter || context, options))
 })
 
+app.use('/api/experiences', require('../api/experiences'))
+
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
 
@@ -66,7 +76,7 @@ app.use(devMiddleware)
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-const uri = 'http://localhost:' + port
+const uri = 'http://0.0.0.0:' + port
 
 let _resolve
 const readyPromise = new Promise(resolve => {

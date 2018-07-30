@@ -37,5 +37,8 @@ module.exports = merge(baseWebpackConfig, {
         './service-worker-dev.js'), 'utf-8')}</script>`
     }),
     new FriendlyErrorsPlugin()
-  ]
+  ],
+  externals: {
+    'json-schema-faker': 'JSONSchemaFaker'
+  }
 })

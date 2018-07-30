@@ -1,18 +1,23 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import Vue2Filters from 'vue2-filters'
 import {
   Vuetify,
   VApp,
   VBtn,
+  VCard,
+  VChip,
+  VCombobox,
   VDivider,
-  VForm,
+  VFooter,
   VGrid,
   VIcon,
   VList,
   VNavigationDrawer,
+  VSnackbar,
   VStepper,
+  VSubheader,
+  VSwitch,
   VTabs,
   VTextField,
   VTimePicker,
@@ -21,22 +26,31 @@ import {
 } from 'vuetify'
 import { Ripple } from 'vuetify/es5/directives'
 import 'vuetify/src/stylus/app.styl'
+import VeeValidate from 'vee-validate'
+import Vue2Filters from 'vue2-filters'
 
-import App from './App'
-import router from './router'
-import store from './store'
+import App from '@/App'
+import router from '@/router'
+
+import ExperiencesService from '@/services/ExperiencesService'
 
 Vue.use(Vuetify, {
   components: {
     VApp,
     VBtn,
+    VCard,
+    VChip,
+    VCombobox,
     VDivider,
-    VForm,
+    VFooter,
     VGrid,
     VIcon,
     VList,
     VNavigationDrawer,
+    VSnackbar,
     VStepper,
+    VSubheader,
+    VSwitch,
     VTabs,
     VTextField,
     VTimePicker,
@@ -47,6 +61,7 @@ Vue.use(Vuetify, {
     Ripple
   }
 })
+Vue.use(VeeValidate)
 Vue.use(Vue2Filters)
 
 Vue.config.productionTip = process.env.NODE_ENV !== 'production'
@@ -55,7 +70,7 @@ Vue.config.productionTip = process.env.NODE_ENV !== 'production'
 new Vue({
   el: '#app',
   router,
-  store,
+  experiencesService: ExperiencesService,
   components: { App },
   template: '<App/>'
 })

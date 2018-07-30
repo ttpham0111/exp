@@ -1,30 +1,27 @@
+import moment from 'moment'
+
 export class Experience {
   constructor(data) {
-    this.title = data.title
-    this.image = data.image
+    this.id = data.id
+    this.owner = data.owner || ''
+    this.isPublic = data.isPublic || true
+    this.name = data.name || ''
+    this.imageUrl = data.image_url || ''
+    this.events = data.events || []
+    this.numEvents = data.num_events || this.events.length
+    this.rating = data.rating || 0
+    this.tags = data.tags || []
+    this.collaborators = data.collaborators || []
+    this.numCollaborators = data.num_collaborators || this.collaborators.length
+    this.comments = data.comments || []
+    this.numComments = data.num_comments || this.comments.length
+    this.startsAt = moment(data.starts_at)
 
-    this._id = data.id
-    this._events = data.events || []
-    this._tags = data.tags || []
-  }
-
-  get id() {
-    return this._id
-  }
-
-  get events() {
-    return this._events.slice()
-  }
-
-  addEvent(event) {
-    this._events.push(event)
-  }
-
-  get tags() {
-    return this._tags.slice()
-  }
-
-  addTag(tag) {
-    this._tag.push(tag)
+    Object.freeze(this.startsAt)
+    Object.freeze(this.comments)
+    Object.freeze(this.collaborators)
+    Object.freeze(this.tags)
+    Object.freeze(this.events)
+    Object.freeze(this)
   }
 }
