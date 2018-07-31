@@ -20,7 +20,6 @@
     </v-btn>
 
     <v-toolbar-items>
-
       <v-btn
         v-if="showSignin"
         flat
@@ -28,14 +27,12 @@
       >
         Sign In
       </v-btn>
-
-      <v-btn
-        v-else
-        flat
-      >
-        $userService.get().displayName
-      </v-btn>
     </v-toolbar-items>
+
+    <toolbar-user-menu
+      v-if="!showSignin"
+      :user="user"
+    />
 
     <v-text-field
       v-if="showSearch"
@@ -53,7 +50,13 @@
 </template>
 
 <script>
+import ToolbarUserMenu from '@/components/toolbar/ToolbarUserMenu'
+
 export default {
+  components: {
+    ToolbarUserMenu
+  },
+
   data() {
     return {
       search: '',
@@ -62,9 +65,12 @@ export default {
   },
 
   computed: {
+    user() {
+      return this.$userService.get()
+    },
+
     showSignin() {
-      const user = this.$userService.get()
-      return !user || user.isAnonymous
+      return !this.user || this.user.isAnonymous
     }
   },
 

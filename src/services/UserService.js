@@ -4,6 +4,8 @@ import 'firebase/auth'
 import firebaseui from 'firebaseui'
 
 import router from '@/router'
+import store from '@/store'
+import { User } from '@/models/User'
 
 firebase.initializeApp({
   apiKey: 'AIzaSyBUHHh762mAMFQ5kZiW0zIsPQn-JF4acYw',
@@ -17,7 +19,9 @@ firebase.initializeApp({
 class UserService {
   constructor() {
     this.auth = firebase.auth()
-    this.auth.signInAnonymously()
+    this.state = store.state.User
+
+    this.auth.onAuthStateChanged(this._onUserUpdate)
 
     this._ui = new firebaseui.auth.AuthUI(this.auth)
   }
@@ -36,15 +40,20 @@ class UserService {
   }
 
   startUI(el) {
+    const self = this
+    const anonymousUser = this.auth.currentUser
+
     this._ui.start(el, {
       autoUpgradeAnonymousUsers: true,
       signInSuccessUrl: router.resolve({name: 'Experience'}).href,
       signInOptions: [
+        firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
 
       callbacks: {
         signInSuccessWithAuthResult(authResult, redirectUrl) {
+          self._onUserUpdate(authResult.user)
           router.push({'name': 'Experience'})
           return false
         },
@@ -53,14 +62,26 @@ class UserService {
           if (err.code !== 'firebaseui/anonymous-upgrade-merge-conflict') {
             return Promise.resolve()
           }
-          // TODO: Resolve merge conflict
+
+          return self.auth.signInWithCredential(err.credential)
+            .then(() => anonymousUser.delete())
+            .then(() => router.push({'name': 'Experience'}))
         }
       }
     })
   }
 
   get() {
-    return this.auth.currentUser
+    return this.state.user
+  }
+
+  logout() {
+    this.auth.signOut()
+    router.push({name: 'Explore'})
+  }
+
+  _onUserUpdate(user) {
+    store.commit('User/set', user && new User(user))
   }
 }
 

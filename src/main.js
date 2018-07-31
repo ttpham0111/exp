@@ -4,6 +4,7 @@ import Vue from 'vue'
 import {
   Vuetify,
   VApp,
+  VAvatar,
   VBtn,
   VCard,
   VChip,
@@ -13,6 +14,7 @@ import {
   VGrid,
   VIcon,
   VList,
+  VMenu,
   VNavigationDrawer,
   VSnackbar,
   VStepper,
@@ -39,6 +41,7 @@ import UserService from '@/services/UserService'
 Vue.use(Vuetify, {
   components: {
     VApp,
+    VAvatar,
     VBtn,
     VCard,
     VChip,
@@ -48,6 +51,7 @@ Vue.use(Vuetify, {
     VGrid,
     VIcon,
     VList,
+    VMenu,
     VNavigationDrawer,
     VSnackbar,
     VStepper,

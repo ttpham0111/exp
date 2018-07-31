@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Toolbar from '@/components/Toolbar'
+import Toolbar from '@/components/toolbar/Toolbar'
 import SideNav from '@/components/SideNav'
 import FooterNav from '@/components/FooterNav'
 
