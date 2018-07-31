@@ -25,10 +25,16 @@ export default {
   },
 
   mounted() {
-    this.$experiencesService.get()
-      .then(experiences => {
-        this.experiences = experiences
-      })
+    this.getExperiences()
+  },
+
+  methods: {
+    getExperiences() {
+      return this.$experiencesService.get()
+        .then(experiences => {
+          this.experiences = experiences
+        })
+    }
   }
 }
 </script>

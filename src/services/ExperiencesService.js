@@ -8,6 +8,7 @@ import { NoResultError } from '@/services/errors'
 class ExperiencesService {
   constructor() {
     this.state = store.state.Experiences
+    this.initialized = false
   }
 
   install(V, options) {
@@ -24,33 +25,27 @@ class ExperiencesService {
   }
 
   get(refresh) {
-    if (refresh || !this.state.initialized) {
+    if (refresh || !this.initialized) {
       return axios.get('/api/experiences/mine')
         .then(res => {
           return res.data
         })
         .then(experiences => {
-          experiences.forEach(experience => {
-            store.commit('Experiences/create', new Experience(experience))
-          })
-
-          if (!this.state.initialized) store.commit('Experiences/init')
+          experiences = experiences.map(exp => new Experience(exp))
+          store.commit('Experiences/refresh', experiences)
+          this.initialized = true
           return this.state.experiences
         })
     } else {
-      return new Promise((resolve, reject) => {
-        resolve(this.state.experiences)
-      })
+      return Promise.resolve(this.state.experiences)
     }
   }
 
   getId(experienceId) {
     if (this.state.experienceIdLookup.hasOwnProperty(experienceId)) {
-      return new Promise((resolve, reject) => {
-        resolve(this.state.experienceIdLookup[experienceId])
-      })
+      return Promise.resolve(this.state.experienceIdLookup[experienceId])
     } else {
-      return this.get(true)
+      return this.get()
         .then(() => {
           if (this.state.experienceIdLookup.hasOwnProperty(experienceId)) {
             return this.state.experienceIdLookup[experienceId]

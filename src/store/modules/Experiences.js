@@ -1,21 +1,25 @@
+function createExperience(state, experience) {
+  state.experiences.push(experience)
+  state.experienceIdLookup[experience.id] = experience
+}
+
 export default {
   namespaced: true,
 
   state: {
-    initialized: false,
     experiences: [],
     experienceIdLookup: {},
     eventIdLookup: {}
   },
 
   mutations: {
-    init(state) {
-      state.initialized = true
+    refresh(state, experiences) {
+      state.experiences = []
+      experiences.forEach(experience => createExperience(state, experience))
     },
 
     create(state, experience) {
-      state.experiences.push(experience)
-      state.experienceIdLookup[experience.id] = experience
+      createExperience(state, experience)
     },
 
     addEvent(state, experienceId, event) {

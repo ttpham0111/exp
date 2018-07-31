@@ -32,7 +32,6 @@
           fill-height
           fluid
           pa-2
-          class="overlay"
         >
           <v-layout
             align-center

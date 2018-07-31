@@ -28,11 +28,13 @@ import { Ripple } from 'vuetify/es5/directives'
 import 'vuetify/src/stylus/app.styl'
 import VeeValidate from 'vee-validate'
 import Vue2Filters from 'vue2-filters'
+import 'firebaseui/dist/firebaseui.css'
 
 import App from '@/App'
 import router from '@/router'
 
 import ExperiencesService from '@/services/ExperiencesService'
+import UserService from '@/services/UserService'
 
 Vue.use(Vuetify, {
   components: {
@@ -71,6 +73,7 @@ new Vue({
   el: '#app',
   router,
   experiencesService: ExperiencesService,
+  userService: UserService,
   components: { App },
   template: '<App/>'
 })

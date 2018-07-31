@@ -1,12 +1,11 @@
 <template>
   <v-app>
+    <toolbar />
     <side-nav v-model="showSidenav" />
-
-    <router-view name="toolbar" @toggle-sidenav="toggleSidenav" />
 
     <v-content>
       <v-container fluid fill-height>
-        <router-view name="content" />
+        <router-view />
       </v-container>
     </v-content>
 
@@ -15,11 +14,13 @@
 </template>
 
 <script>
+import Toolbar from '@/components/Toolbar'
 import SideNav from '@/components/SideNav'
 import FooterNav from '@/components/FooterNav'
 
 export default {
   components: {
+    Toolbar,
     SideNav,
     FooterNav
   },

@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import ExperienceFormExperience from '@/components/experience/ExperienceFormExperience'
-import ExperienceFormEvents from '@/components/experience/ExperienceFormEvents'
+import ExperienceFormExperience from '@/components/experience/form/ExperienceFormExperience'
+import ExperienceFormEvents from '@/components/experience/form/ExperienceFormEvents'
 import { NoResultError } from '@/services/errors'
 
 const TAB_EXPERIENCE_FORM = 0
