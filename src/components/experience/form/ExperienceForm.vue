@@ -7,17 +7,17 @@
         :experience="experience"
         :show-next="showNext"
         @submit="onSubmitExperienceForm"
-        @next="goToEventsForm"
+        @next="goToActivitiesForm"
         @error="display"
       />
     </v-flex>
 
     <v-flex xs12 md6
-      v-if="experience"
+      :pl-4="!showNext"
       v-show="!showNext || activeTab === TAB_EVENTS_FORM"
     >
-      <experience-form-events
-        :experience="experience"
+      <experience-form-activities
+        v-model="activities"
         @back="goToExperienceForm"
         @error="display"
       />
@@ -43,7 +43,7 @@
 
 <script>
 import ExperienceFormExperience from '@/components/experience/form/ExperienceFormExperience'
-import ExperienceFormEvents from '@/components/experience/form/ExperienceFormEvents'
+import ExperienceFormActivities from '@/components/experience/form/ExperienceFormActivities'
 import { NoResultError } from '@/services/errors'
 
 const TAB_EXPERIENCE_FORM = 0
@@ -52,7 +52,7 @@ const TAB_EVENTS_FORM = 1
 export default {
   components: {
     ExperienceFormExperience,
-    ExperienceFormEvents
+    ExperienceFormActivities
   },
 
   props: {
@@ -63,6 +63,7 @@ export default {
     return {
       loading: false,
       experience: null,
+      activities: [],
 
       snackbarText: '',
       showSnackbar: false,
@@ -75,7 +76,7 @@ export default {
 
   computed: {
     showNext() {
-      return this.experienceId && this.$vuetify.breakpoint.xsOnly
+      return this.$vuetify.breakpoint.xsOnly
     }
   },
 
@@ -99,7 +100,7 @@ export default {
       this.activeTab = TAB_EXPERIENCE_FORM
     },
 
-    goToEventsForm() {
+    goToActivitiesForm() {
       this.activeTab = TAB_EVENTS_FORM
     },
 
@@ -107,6 +108,7 @@ export default {
       return this.$experiencesService.getId(this.experienceId)
         .then(experience => {
           this.experience = experience
+          this.activities = experience.activities
         })
         .catch(err => {
           if (err instanceof NoResultError) {
@@ -118,13 +120,26 @@ export default {
     },
 
     onSubmitExperienceForm(form) {
-      return this.$experiencesService.create(form)
-        .then(experience => {
-          this.$router.push({
-            name: 'ExperienceFormEdit',
-            params: {experienceId: experience.id}
+      let promise = null
+
+      if (form.image) {
+        promise = this.$experiencesService.uploadImage(form.image)
+          .then(imageUrl => {
+            form.image_url = imageUrl
           })
-        })
+      } else {
+        promise = Promise.resolve()
+      }
+
+      return promise.then(() => {
+        this.$experiencesService.create(form)
+          .then(experience => {
+            this.$router.push({
+              name: 'ExperienceFormEdit',
+              params: {experienceId: experience.id}
+            })
+          })
+      })
     }
   }
 }

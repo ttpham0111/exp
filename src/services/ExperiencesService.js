@@ -4,6 +4,7 @@ import Vue from 'vue'
 import store from '@/store'
 import { Experience } from '@/models/Experience'
 import { NoResultError } from '@/services/errors'
+import UserService from '@/services/UserService'
 
 class ExperiencesService {
   constructor() {
@@ -26,15 +27,16 @@ class ExperiencesService {
 
   get(refresh) {
     if (refresh || !this.initialized) {
-      return axios.get('/api/experiences/mine')
-        .then(res => {
-          return res.data
-        })
-        .then(experiences => {
-          experiences = experiences.map(exp => new Experience(exp))
-          store.commit('Experiences/refresh', experiences)
-          this.initialized = true
-          return this.state.experiences
+      return UserService.getAuthHeader()
+        .then(headers => {
+          return axios.get('/api/experiences/mine', {headers: headers})
+            .then(res => res.data)
+            .then(experiences => {
+              experiences = experiences.map(exp => new Experience(exp))
+              store.commit('Experiences/refresh', experiences)
+              this.initialized = true
+              return this.state.experiences
+            })
         })
     } else {
       return Promise.resolve(this.state.experiences)
@@ -56,15 +58,31 @@ class ExperiencesService {
     }
   }
 
-  create(experience) {
-    return axios.post('/api/experiences', experience)
-      .then(res => {
-        return res.data
+  uploadImage(image) {
+    const formData = new FormData()
+    formData.append('image', image)
+
+    return UserService.getAuthHeader({'Content-Type': 'multipart/form-data'})
+      .then(headers => {
+        return axios.post(
+          '/api/upload', formData, {headers: headers}
+        )
+          .then(res => res.data)
       })
-      .then(experience => {
-        experience = new Experience(experience)
-        store.commit('Experiences/create', experience)
-        return experience
+  }
+
+  create(experience) {
+    return UserService.getAuthHeader()
+      .then(headers => {
+        return axios.post('/api/experiences', experience, {headers: headers})
+          .then(res => {
+            return res.data
+          })
+          .then(experience => {
+            experience = new Experience(experience)
+            store.commit('Experiences/create', experience)
+            return experience
+          })
       })
   }
 }

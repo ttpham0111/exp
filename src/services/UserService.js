@@ -21,7 +21,18 @@ class UserService {
     this.auth = firebase.auth()
     this.state = store.state.User
 
-    this.auth.onAuthStateChanged(this._onUserUpdate)
+    this._initialized = false
+    this.returnTo = ''
+
+    // TODO: Fix this hacky authentication
+    this.auth.onAuthStateChanged((user) => {
+      this._onUserUpdate(user)
+
+      if (user && !this._initialized) {
+        router.push(this.returnTo || {'name': 'Explore'})
+      }
+      this._initialized = true
+    })
 
     this._ui = new firebaseui.auth.AuthUI(this.auth)
   }
@@ -45,7 +56,7 @@ class UserService {
 
     this._ui.start(el, {
       autoUpgradeAnonymousUsers: true,
-      signInSuccessUrl: router.resolve({name: 'Experience'}).href,
+      signInSuccessUrl: router.resolve({name: 'Explore'}).href,
       signInOptions: [
         firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -54,7 +65,7 @@ class UserService {
       callbacks: {
         signInSuccessWithAuthResult(authResult, redirectUrl) {
           self._onUserUpdate(authResult.user)
-          router.push({'name': 'Experience'})
+          router.push({'name': 'Explore'})
           return false
         },
 
@@ -65,7 +76,7 @@ class UserService {
 
           return self.auth.signInWithCredential(err.credential)
             .then(() => anonymousUser.delete())
-            .then(() => router.push({'name': 'Experience'}))
+            .then(() => router.push({'name': 'Explore'}))
         }
       }
     })
@@ -73,6 +84,15 @@ class UserService {
 
   get() {
     return this.state.user
+  }
+
+  getAuthHeader(headers) {
+    headers = headers || {}
+    return this.auth.currentUser.getIdToken(true)
+      .then(idToken => {
+        headers.Authorization = 'Bearer ' + idToken
+        return headers
+      })
   }
 
   logout() {

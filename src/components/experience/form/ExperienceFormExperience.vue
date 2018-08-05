@@ -23,12 +23,12 @@
       color="grey lighten-2"
     >
       <v-card-media
-        :src="previewImageUrl || form.imageUrl"
+        :src="previewImageUrl || form.image_url"
         height="200px"
         @click="$refs.imageUpload.click()"
       >
         <v-container
-          v-if="!(previewImageUrl || form.imageUrl)"
+          v-if="!(previewImageUrl || form.image_url)"
           fill-height
           fluid
           pa-2
@@ -64,7 +64,7 @@
 
     <v-switch
       label="Private"
-      v-model="form.isPrivate"
+      v-model="form.is_private"
       hint="Only viewable by the group"
       persistent-hint
     />
@@ -125,10 +125,10 @@ export default {
       hasNewInput: false,
 
       form: {
-        isPrivate: false,
+        is_private: false,
         name: '',
-        imageUrl: '',
-        events: [],
+        image_url: '',
+        activities: [],
         tags: [],
         collaborators: []
       },
@@ -168,10 +168,10 @@ export default {
       const experience = this.experience
       const form = this.form
 
-      form.isPrivate = !(experience.isPublic || true)
+      form.is_private = experience.isPrivate || false
       form.name = experience.name || ''
-      form.imageUrl = experience.imageUrl || ''
-      form.events = experience.events || []
+      form.image_url = experience.imageUrl || ''
+      form.activity = experience.activity || []
       form.tags = experience.tags || []
       form.collaborators = experience.collaborators || []
 
@@ -193,7 +193,6 @@ export default {
       this.$validator.validateAll()
         .then(valid => {
           if (valid) {
-            this.form.isPublic = !this.form.isPrivate
             this.$emit('submit', this.form)
             this.hasNewInput = false
           } else {

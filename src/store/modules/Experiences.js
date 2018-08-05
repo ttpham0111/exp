@@ -9,7 +9,7 @@ export default {
   state: {
     experiences: [],
     experienceIdLookup: {},
-    eventIdLookup: {}
+    activityIdLookup: {}
   },
 
   mutations: {
@@ -20,11 +20,6 @@ export default {
 
     create(state, experience) {
       createExperience(state, experience)
-    },
-
-    addEvent(state, experienceId, event) {
-      state.experienceIdLookup[experienceId].events.push(event)
-      state.eventIdLookup[event.id] = event
     }
   }
 }

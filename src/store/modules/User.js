@@ -1,10 +1,8 @@
-import { User } from '@/models/User'
-
 export default {
   namespaced: true,
 
   state: {
-    user: new User()
+    user: null
   },
 
   mutations: {

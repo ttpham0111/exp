@@ -5,7 +5,7 @@
     fixed
     :extended="showSearch"
     color="light-blue darken-3">
-    <v-toolbar-side-icon @click.stop="$emit('toggle-sidenav')"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click="$emit('toggle-sidenav')"></v-toolbar-side-icon>
     
     <v-toolbar-title @click="goHome">
       EXP

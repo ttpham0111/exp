@@ -9,6 +9,7 @@ yarn-error.log*
 selenium-debug.log
 
 /config/prod.env.js
+/config/firebase.json
 
 # Editor directories and files
 .idea

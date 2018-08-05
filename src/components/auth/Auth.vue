@@ -8,13 +8,18 @@
 
 <script>
 export default {
-  data() {
-    return {
-    }
+  props: {
+    returnTo: String
   },
 
   mounted() {
     this.$userService.startUI('#firebaseui-auth-container')
+  },
+
+  beforeUpdate() {
+    if (this.$userService.get()) {
+      this.$router.push(this.returnTo || {'name': 'Explore'})
+    }
   }
 }
 </script>

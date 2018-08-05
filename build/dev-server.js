@@ -51,6 +51,9 @@ compiler.plugin('compilation', function (compilation) {
   })
 })
 
+app.use(require('body-parser').json())
+app.use(require('express-fileupload')())
+
 // enable hot-reload and state-preserving
 // compilation error display
 app.use(hotMiddleware)
@@ -64,7 +67,15 @@ Object.keys(proxyTable).forEach(function (context) {
   app.use(proxyMiddleware(options.filter || context, options))
 })
 
+
+const admin = require('firebase-admin')
+admin.initializeApp({
+  credential: admin.credential.cert(require('../config/firebase.json')),
+  databaseURL: 'https://exp-el.firebaseio.com'
+})
 app.use('/api/experiences', require('../api/experiences'))
+app.use('/api/activities', require('../api/activities'))
+app.use('/api/upload', require('../api/files'))
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())

@@ -35,8 +35,9 @@ import 'firebaseui/dist/firebaseui.css'
 import App from '@/App'
 import router from '@/router'
 
-import ExperiencesService from '@/services/ExperiencesService'
 import UserService from '@/services/UserService'
+import ExperiencesService from '@/services/ExperiencesService'
+import ActivitiesService from '@/services/ActivitiesService'
 
 Vue.use(Vuetify, {
   components: {
@@ -77,6 +78,7 @@ new Vue({
   el: '#app',
   router,
   experiencesService: ExperiencesService,
+  activitiesService: ActivitiesService,
   userService: UserService,
   components: { App },
   template: '<App/>'

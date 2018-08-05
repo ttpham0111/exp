@@ -3,25 +3,14 @@
     <v-layout column>
       <v-tabs fixed-tabs icons-and-text height="60">
         <v-tabs-slider color="accent darken-3" style="height: 3px"></v-tabs-slider>
-
-        <v-tab :to="{name: 'Explore'}">
-          <small>Explore</small>
-          <v-icon>fab fa-wpexplorer</v-icon>
-        </v-tab>
-
-        <v-tab :to="{name: 'Experience'}">
-          <small>Experience</small>
-          <v-icon>fa-play</v-icon>
-        </v-tab>
-
-        <v-tab :to="{name: 'Express'}">
-          <small>Express</small>
-          <v-icon>far fa-comments</v-icon>
-        </v-tab>
-
-        <v-tab :to="{name: 'Bookmarks'}">
-          <small>Bookmarks</small>
-          <v-icon>far fa-bookmark</v-icon>
+        
+        <v-tab
+          v-for="nav in mainNavs"
+          :key="nav.title"
+          :to="nav.to"
+        >
+          <small>{{ nav.title }}</small>
+          <v-icon>{{ nav.icon }}</v-icon>
         </v-tab>
       </v-tabs>
     </v-layout>
@@ -30,9 +19,8 @@
 
 <script>
 export default {
-  data() {
-    return {
-    }
+  props: {
+    mainNavs: Array
   }
 }
 </script>

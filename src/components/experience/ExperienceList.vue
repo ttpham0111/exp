@@ -23,7 +23,7 @@
             <v-card-actions>
               <v-chip label color="transparent">
                 <v-icon left>event_note</v-icon>
-                {{ experience.numEvents }}
+                {{ experience.numActivities }}
               </v-chip>
 
               <v-chip label color="transparent">

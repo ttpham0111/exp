@@ -17,7 +17,7 @@
     </v-btn>
 
     <v-card>
-      <v-list>
+      <v-list three-line>
         <v-list-tile avatar>
           <v-list-tile-avatar>
             <img

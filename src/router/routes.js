@@ -7,11 +7,7 @@ import ExperienceForm from '@/components/experience/form/ExperienceForm'
 
 import Express from '@/components/express/Express'
 
-import Bookmarks from '@/components/bookmarks/Bookmarks'
-
-// import ExperienceList from '@/components/experiences/ExperienceList'
-// import Events from '@/components/experiences/events/Events'
-// import EventForm from '@/components/experiences/events/EventForm'
+import Favorites from '@/components/favorites/Favorites'
 
 export default [
   {
@@ -21,7 +17,8 @@ export default [
   {
     path: '/auth',
     name: 'Auth',
-    component: Auth
+    component: Auth,
+    props: true
   },
   {
     path: '/explore',
@@ -31,43 +28,32 @@ export default [
   {
     path: '/experience',
     name: 'Experience',
-    component: Experience
+    component: Experience,
+    meta: { requiresAuth: true }
   },
   {
     path: '/experience/new',
     name: 'ExperienceForm',
-    component: ExperienceForm
+    component: ExperienceForm,
+    meta: { requiresAuth: true }
   },
   {
     path: '/experience/:experienceId/edit',
     name: 'ExperienceFormEdit',
     component: ExperienceForm,
-    props: true
+    props: true,
+    meta: { requiresAuth: true }
   },
   {
     path: '/express',
     name: 'Express',
-    component: Express
+    component: Express,
+    meta: { requiresAuth: true }
   },
   {
-    path: '/bookmarks',
-    name: 'Bookmarks',
-    component: Bookmarks
+    path: '/favorites',
+    name: 'Favorites',
+    component: Favorites,
+    meta: { requiresAuth: true }
   }
-  // {
-  //   path: '/experiences/:experienceId',
-  //   redirect: { name: 'Events' }
-  // },
-  // {
-  //   path: '/experiences/:experienceId/events',
-  //   name: 'Events',
-  //   component: Events,
-  //   props: true
-  // },
-  // {
-  //   path: '/experiences/:experienceId/events/new',
-  //   name: 'EventForm',
-  //   component: EventForm,
-  //   props: true
-  // }
 ]

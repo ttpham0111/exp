@@ -10,12 +10,7 @@ export class User {
     this.photoURL = data.photoURL || false
     this.providerData = data.providerData || {}
 
-    data.getIdToken && data.getIdToken()
-      .then(accessToken => {
-        this.accessToken = accessToken
-
-        Object.freeze(this.providerData)
-        Object.freeze(this)
-      })
+    Object.freeze(this.providerData)
+    Object.freeze(this)
   }
 }
