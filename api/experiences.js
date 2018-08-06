@@ -19,13 +19,25 @@ router.get('/mine', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+  console.log('post')
   // TODO: Move to middleware, check exists
   admin.auth().verifyIdToken(req.header('Authorization').split(' ')[1])
     .then(userData => {
-      const experience = req.body
-      experience.owner = userData.uid
+      req.body.owner = userData.uid
+      return axios.post(BACKEND_URL + '/v1/experiences', req.body)
+        .then(axiosRes => axiosRes.data)
+        .then(experience => res.json(experience))
+    })
+    .catch(console.log)
+})
 
-      return axios.post(BACKEND_URL + '/v1/experiences', experience)
+router.put('/:id', (req, res) => {
+  console.log('Put')
+  // TODO: Move to middleware, check exists
+  admin.auth().verifyIdToken(req.header('Authorization').split(' ')[1])
+    .then(userData => {
+      req.body.owner = userData.uid
+      return axios.put(BACKEND_URL + '/v1/experiences/' + req.params.id, req.body)
         .then(axiosRes => axiosRes.data)
         .then(experience => res.json(experience))
     })

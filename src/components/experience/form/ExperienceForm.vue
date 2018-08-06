@@ -4,7 +4,8 @@
       v-show="activeTab === TAB_EXPERIENCE_FORM"
     >
       <experience-form-experience
-        :experience="experience"
+        ref="experienceForm"
+        :form-data="experience"
         :show-next="showNext"
         @submit="onSubmitExperienceForm"
         @next="goToActivitiesForm"
@@ -18,6 +19,8 @@
     >
       <experience-form-activities
         v-model="activities"
+        :show-prev="showNext"
+        @submit="$refs.experienceForm.onSubmit()"
         @back="goToExperienceForm"
         @error="display"
       />
@@ -45,6 +48,8 @@
 import ExperienceFormExperience from '@/components/experience/form/ExperienceFormExperience'
 import ExperienceFormActivities from '@/components/experience/form/ExperienceFormActivities'
 import { NoResultError } from '@/services/errors'
+import { Experience } from '@/models/Experience'
+import { Activity } from '@/models/Activity'
 
 const TAB_EXPERIENCE_FORM = 0
 const TAB_EVENTS_FORM = 1
@@ -63,7 +68,7 @@ export default {
     return {
       loading: false,
       experience: null,
-      activities: [],
+      activities: null,
 
       snackbarText: '',
       showSnackbar: false,
@@ -75,6 +80,10 @@ export default {
   },
 
   computed: {
+    editting() {
+      return Boolean(this.experienceId)
+    },
+
     showNext() {
       return this.$vuetify.breakpoint.xsOnly
     }
@@ -107,6 +116,12 @@ export default {
     getExperience() {
       return this.$experiencesService.getId(this.experienceId)
         .then(experience => {
+          // These were retrieved from the store and need to be modifyable
+          experience = Object.assign(new Experience(), experience)
+          experience.activities = experience.activities.map(activity => {
+            return Object.assign(new Activity(), activity)
+          })
+
           this.experience = experience
           this.activities = experience.activities
         })
@@ -120,7 +135,7 @@ export default {
     },
 
     onSubmitExperienceForm(form) {
-      let promise = null
+      let promise
 
       if (form.image) {
         promise = this.$experiencesService.uploadImage(form.image)
@@ -132,13 +147,23 @@ export default {
       }
 
       return promise.then(() => {
-        this.$experiencesService.create(form)
-          .then(experience => {
-            this.$router.push({
-              name: 'ExperienceFormEdit',
-              params: {experienceId: experience.id}
-            })
+        let promise
+        form.activities = this.activities
+
+        if (this.editting) {
+          promise = this.$experiencesService.update(this.experienceId, form)
+        } else {
+          promise = this.$experiencesService.create(form)
+        }
+
+        promise.then(experience => {
+          this.display('Experience ' + (this.editting ? 'updated' : 'created'))
+
+          this.$router.push({
+            name: 'ExperienceFormEdit',
+            params: {experienceId: experience.id}
           })
+        })
       })
     }
   }

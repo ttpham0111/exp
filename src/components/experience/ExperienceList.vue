@@ -10,7 +10,7 @@
         <v-flex v-for="experience in group.experiences" :key="experience.id"
                 xs12 md6 lg3 xl2>
           <v-card>
-            <v-card-media height="200px" :src="experience.imageUrl">
+            <v-card-media height="200px" :src="experience.image_url">
               <v-container fill-height fluid pa-2 class="overlay">
                 <v-layout fill-height>
                   <v-flex>
@@ -23,17 +23,20 @@
             <v-card-actions>
               <v-chip label color="transparent">
                 <v-icon left>event_note</v-icon>
-                {{ experience.numActivities }}
+                {{ experience.num_activities }}
               </v-chip>
 
               <v-chip label color="transparent">
                 <v-icon left>people_outline</v-icon>
-                {{ experience.numCollaborators }}
+                {{ experience.num_collaborators }}
               </v-chip>
 
               <v-spacer></v-spacer>
               
-              <v-btn icon>
+              <v-btn
+                icon
+                @click="$router.push({name: 'ExperienceFormEdit', params: {experienceId: experience.id}})"
+              >
                 <v-icon>edit</v-icon>
               </v-btn>
               <v-btn icon>
@@ -61,9 +64,9 @@ export default {
 
   computed: {
     sortedByStartsAt() {
-      const toSort = this.experiences.slice()
+      const toSort = this.experiences ? this.experiences.slice() : []
       toSort.sort((a, b) => {
-        return a.startsAt - b.startsAt
+        return a.starts_at - b.starts_at
       })
       return toSort
     },
@@ -71,7 +74,7 @@ export default {
     groups() {
       const groups = {}
       this.sortedByStartsAt.forEach(experience => {
-        let name = experience.startsAt.format('MMMM YYYY')
+        let name = experience.starts_at.format('MMMM YYYY')
         if (groups.hasOwnProperty(name)) groups[name].push(experience)
         else groups[name] = [experience]
       })

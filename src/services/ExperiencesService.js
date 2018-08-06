@@ -45,12 +45,14 @@ class ExperiencesService {
 
   getId(experienceId) {
     if (this.state.experienceIdLookup.hasOwnProperty(experienceId)) {
-      return Promise.resolve(this.state.experienceIdLookup[experienceId])
+      const i = this.state.experienceIdLookup[experienceId]
+      return Promise.resolve(this.state.experiences[i])
     } else {
       return this.get()
         .then(() => {
           if (this.state.experienceIdLookup.hasOwnProperty(experienceId)) {
-            return this.state.experienceIdLookup[experienceId]
+            const i = this.state.experienceIdLookup[experienceId]
+            return Promise.resolve(this.state.experiences[i])
           } else {
             throw new NoResultError(experienceId)
           }
@@ -81,6 +83,21 @@ class ExperiencesService {
           .then(experience => {
             experience = new Experience(experience)
             store.commit('Experiences/create', experience)
+            return experience
+          })
+      })
+  }
+
+  update(id, experience) {
+    return UserService.getAuthHeader()
+      .then(headers => {
+        return axios.put('/api/experiences/' + id, experience, {headers: headers})
+          .then(res => {
+            return res.data
+          })
+          .then(experience => {
+            experience = new Experience(experience)
+            store.commit('Experiences/update', {id, experience})
             return experience
           })
       })

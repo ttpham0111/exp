@@ -1,6 +1,7 @@
 function createExperience(state, experience) {
+  const i = state.experiences.length
   state.experiences.push(experience)
-  state.experienceIdLookup[experience.id] = experience
+  state.experienceIdLookup[experience.id] = i
 }
 
 export default {
@@ -20,6 +21,11 @@ export default {
 
     create(state, experience) {
       createExperience(state, experience)
+    },
+
+    update(state, {id, experience}) {
+      const i = state.experienceIdLookup[id]
+      state.experiences[i] = experience
     }
   }
 }

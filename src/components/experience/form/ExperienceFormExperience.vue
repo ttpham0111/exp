@@ -23,12 +23,12 @@
       color="grey lighten-2"
     >
       <v-card-media
-        :src="previewImageUrl || form.image_url"
+        :src="previewimage_url || form.image_url"
         height="200px"
         @click="$refs.imageUpload.click()"
       >
         <v-container
-          v-if="!(previewImageUrl || form.image_url)"
+          v-if="!(previewimage_url || form.image_url)"
           fill-height
           fluid
           pa-2
@@ -48,8 +48,6 @@
 
     <v-combobox
       v-model="form.tags"
-      :items="tags"
-      :search-input.sync="tagSearch"
       append-icon=""
       label="Tags"
       hide-no-data
@@ -111,80 +109,38 @@
 </template>
 
 <script>
-import { Experience } from '@/models/Experience'
-
 export default {
   props: {
-    experience: Experience,
+    formData: Object,
     showNext: Boolean,
     loading: Boolean
   },
 
   data() {
     return {
-      hasNewInput: false,
-
-      form: {
-        is_private: false,
-        name: '',
-        image_url: '',
-        activities: [],
-        tags: [],
-        collaborators: []
-      },
-
-      previewImageUrl: '',
-
-      tagSearch: '',
-      tags: [
-        'one',
-        'two',
-        'three'
-      ]
+      form: this.formData || {},
+      previewimage_url: ''
     }
   },
 
   computed: {
     submitDisabled() {
-      return !this.hasNewInput || this.errors.any()
+      return this.errors.any()
     }
   },
 
   watch: {
-    form: {
-      handler() {
-        this.hasNewInput = true
-      },
-      deep: true
-    },
-
-    experience() {
-      this.updateForm()
+    formData() {
+      this.form = this.formData || {}
     }
   },
 
   methods: {
-    updateForm() {
-      const experience = this.experience
-      const form = this.form
-
-      form.is_private = experience.isPrivate || false
-      form.name = experience.name || ''
-      form.image_url = experience.imageUrl || ''
-      form.activity = experience.activity || []
-      form.tags = experience.tags || []
-      form.collaborators = experience.collaborators || []
-
-      this.$nextTick(() => {
-        this.hasNewInput = false
-      })
-    },
-
     previewImage(event) {
       this.form.image = event.target.files[0]
       const reader = new FileReader()
       reader.addEventListener('load', () => {
-        this.previewImageUrl = reader.result
+        this.previewimage_url = reader.result
       }, false)
       if (this.form.image) reader.readAsDataURL(this.form.image)
     },
@@ -194,7 +150,6 @@ export default {
         .then(valid => {
           if (valid) {
             this.$emit('submit', this.form)
-            this.hasNewInput = false
           } else {
             const numErrors = this.errors.count()
             const message = numErrors + ' ' +

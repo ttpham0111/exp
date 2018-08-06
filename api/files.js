@@ -10,7 +10,7 @@ const uuid = require('uuid/v4')
 const router = express.Router()
 
 const staticDir = path.join(__dirname, '..', 'static', 'experiences')
-const staticUrl = ['static', 'experiences'].join('/')
+const staticUrl = '/static/experiences'
 
 router.post('/', (req, res) => {
   // TODO: Move to middleware, check exists, error handle
