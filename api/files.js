@@ -25,6 +25,7 @@ function ls(dirname) {
 }
 
 router.post('/', (req, res) => {
+  ls('./dist')
   ls(path.join(staticDir, 'img', 'qgkGjEZegxVxHrJpgin2vwJPFXH2'))
 
   // TODO: Move to middleware, check exists, error handle
