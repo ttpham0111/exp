@@ -9,10 +9,12 @@ const uuid = require('uuid/v4')
 
 const router = express.Router()
 
-const staticDir = path.join(__dirname, '..', 'static', 'experiences')
+const staticDir = path.join('static', 'experiences')
 const staticUrl = '/static/experiences'
 
 router.post('/', (req, res) => {
+  console.log(__dirname)
+
   // TODO: Move to middleware, check exists, error handle
   admin.auth().verifyIdToken(req.header('Authorization').split(' ')[1])
     .then(userData => {
