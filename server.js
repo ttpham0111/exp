@@ -7,7 +7,7 @@ const history = require('connect-history-api-fallback')
 const path = require('path')
 
 admin.initializeApp({
-  credential: admin.credential.cert(require('./config/firebase.json')),
+  credential: admin.credential.cert(JSON.parse(process.env.FIREBASE_CONFIG)),
   databaseURL: 'https://exp-el.firebaseio.com'
 })
 
