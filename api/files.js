@@ -22,7 +22,6 @@ router.post('/', (req, res) => {
 
       const destDir = path.join(staticDir, 'img', userData.uid)
       const dest = path.join(destDir, filename)
-      
 
       mkdirp.sync(destDir, {mode: '0755'})
       return req.files.image.mv(dest)
