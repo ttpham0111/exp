@@ -26,7 +26,7 @@ function ls(dirname) {
 
 router.post('/', (req, res) => {
   ls(staticDir)
-  ls(path.join(staticDir, 'img')
+  ls(path.join(staticDir, 'img'))
   ls('./static')
 
   // TODO: Move to middleware, check exists, error handle
