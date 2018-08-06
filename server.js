@@ -26,4 +26,9 @@ app.use(express.static(path.join(__dirname, 'dist')))
 var port = process.env.PORT || 8080
 app.listen(port, () => {
   console.log('Server started on port ' + port)
+
+  const http = require('http');
+  setInterval(() => {
+      http.get('https://exp-erience.herokuapp.com')
+  }, 1200000)  // 20 minutes
 })
