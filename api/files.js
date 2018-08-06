@@ -6,6 +6,7 @@ const express = require('express')
 const mkdirp = require('mkdirp')
 const path = require('path')
 const uuid = require('uuid/v4')
+const fs = require('fs')
 
 const router = express.Router()
 
