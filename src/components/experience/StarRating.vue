@@ -29,12 +29,16 @@ export default {
   },
 
   computed: {
+    safeRating() {
+      return this.rating || 0
+    },
+
     nFull() {
-      return Math.floor(this.rating) || []
+      return Math.floor(this.safeRating) || []
     },
 
     nHalf() {
-      return (this.rating % 1) === 0 ? [] : 1
+      return (this.safeRating % 1) === 0 ? [] : 1
     },
 
     nEmpty() {

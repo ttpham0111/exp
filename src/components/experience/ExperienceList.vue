@@ -12,10 +12,21 @@
           <v-card>
             <v-card-media height="200px" :src="experience.image_url">
               <v-container fill-height fluid pa-2 class="overlay">
-                <v-layout fill-height>
-                  <v-flex>
+                <v-layout
+                  fill-height
+                  row
+                  wrap
+                  align-content-start
+                >
+                  <v-flex xs12>
                     <span class="headline white--text" v-text="experience.name"></span>
                   </v-flex>
+                  <!-- <v-flex
+                    v-if="!editable"
+                    xs12
+                  >
+                    <star-rating :rating="experience.rating" />
+                  </v-flex> -->
                 </v-layout>
               </v-container>
             </v-card-media>
@@ -26,7 +37,10 @@
                 {{ experience.num_activities }}
               </v-chip>
 
-              <v-chip label color="transparent">
+              <v-chip
+                v-if="editable"
+                label
+                color="transparent">
                 <v-icon left>people_outline</v-icon>
                 {{ experience.num_collaborators }}
               </v-chip>
@@ -34,6 +48,7 @@
               <v-spacer></v-spacer>
               
               <v-btn
+                v-if="editable"
                 icon
                 @click="$router.push({name: 'ExperienceFormEdit', params: {experienceId: experience.id}})"
               >
@@ -59,7 +74,11 @@ export default {
   },
 
   props: {
-    experiences: Array
+    experiences: Array,
+    editable: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {

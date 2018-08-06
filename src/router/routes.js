@@ -1,6 +1,7 @@
 import Auth from '@/components/auth/Auth'
 
 import Explore from '@/components/explore/Explore'
+import ExploreExperience from '@/components/explore/ExploreExperience'
 
 import Experience from '@/components/experience/Experience'
 import ExperienceForm from '@/components/experience/form/ExperienceForm'
@@ -24,6 +25,12 @@ export default [
     path: '/explore',
     name: 'Explore',
     component: Explore
+  },
+  {
+    path: '/explore/:experienceId',
+    name: 'ExploreExperience',
+    component: ExploreExperience,
+    props: true
   },
   {
     path: '/experience',

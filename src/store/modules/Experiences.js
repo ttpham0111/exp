@@ -8,12 +8,23 @@ export default {
   namespaced: true,
 
   state: {
+    topExperiences: [],
+    topExperiencesById: {},
+
     experiences: [],
     experienceIdLookup: {},
     activityIdLookup: {}
   },
 
   mutations: {
+    top(state, experiences) {
+      state.topExperiences = []
+      experiences.forEach(experience => {
+        state.topExperiences.push(experience)
+        state.topExperiencesById[experience.id] = experience
+      })
+    },
+
     refresh(state, experiences) {
       state.experiences = []
       experiences.forEach(experience => createExperience(state, experience))

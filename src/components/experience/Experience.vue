@@ -6,7 +6,10 @@
       <v-icon>add</v-icon>
     </v-btn>
 
-    <experience-list :experiences="experiences" />
+    <experience-list
+      :experiences="experiences"
+      :editable="true"
+    />
   </v-layout>
 </template>
 

@@ -9,9 +9,20 @@
       label="Find activities"
       :loading="loading"
       append-icon="search"
+      append-outer-icon="location_on"
       @keyup.enter.native="onSearch"
       @click:append="onSearch"
       @click:clear="onClear"
+      @click:append-outer="showLocationSearch = !showLocationSearch"
+    ></v-text-field>
+
+    <v-text-field
+      v-if="showLocationSearch"
+      v-model="location"
+      clearable
+      class="mt-3"
+      label="San Jose, CA"
+      solo-inverted
     ></v-text-field>
     
     <activity-list :activities="activities">
@@ -25,14 +36,13 @@
           v-if="isViewing"
           class="ml-2"
           :selected="showDateTimePickers === index"
-          @click="onShowDateTimePickers(index)"
+          :disabled="activity.source === source.EVENTBRITE"
+          @click="activity.source === source.EVENTBRITE || onShowDateTimePickers(index)"
         >
           <v-avatar>
             <v-icon>access_time</v-icon>
           </v-avatar>
-          <span>
-            {{ dateTimeRange(activity) }}
-          </span>
+          <span v-html="dateTimeRange(activity)"></span>
         </v-chip>
       </template>
 
@@ -92,9 +102,11 @@ import moment from 'moment'
 import ActivityList from '@/components/experience/activities/ActivityList'
 import DateTimePicker from '@/components/vuetify-custom/DateTimePicker'
 
+import { ActivitySource } from '@/models/Activity'
+
 const MODE_VIEW = 0
 const MODE_SEARCH = 1
-const PRETTY_DATE_FORMAT = 'ddd, D MMM [at] hh:mmA'
+const PRETTY_DATE_FORMAT = '[<strong>]ddd, D MMM[</strong>] [at] [<strong>]hh:mmA[</strong>]'
 
 export default {
   components: {
@@ -109,14 +121,18 @@ export default {
 
   data() {
     return {
+      source: ActivitySource,
       mode: MODE_VIEW,
-      selected: this.value,
+      selected: this.value || [],
 
       search: '',
       found: [],
       loading: false,
 
-      showDateTimePickers: null
+      showDateTimePickers: null,
+
+      location: '',
+      showLocationSearch: false
     }
   },
 
@@ -147,13 +163,14 @@ export default {
   methods: {
     dateTimeRange(activity) {
       if (!activity.starts_at && !activity.ends_at) return 'Anytime'
-      else if (!this.$vuetify.breakpoint.mdAndUp) return '...'
 
-      if (!activity.ends_at) {
-        return 'Starts ' + activity.starts_at.format(PRETTY_DATE_FORMAT)
-      } else if (!activity.starts_at) {
-        return 'Ends ' + activity.ends_at.format(PRETTY_DATE_FORMAT)
-      } else return '...'
+      if (!activity.starts_at) return activity.ends_at.format(PRETTY_DATE_FORMAT)
+
+      let str = activity.starts_at.format(PRETTY_DATE_FORMAT)
+      if (activity.ends_at) {
+        str += ' (' + activity.ends_at.to(activity.starts_at, true) + ')'
+      }
+      return str
     },
 
     onClear() {
@@ -168,12 +185,23 @@ export default {
       this.mode = MODE_SEARCH
       this.loading = true
 
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.$activitiesService.find({
-          term: this.search,
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        })
+      let fn = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation)
+      if (this.location) {
+        fn = (cb) => cb(null)
+      }
+
+      fn((position) => {
+        const params = {
+          term: this.search
+        }
+
+        if (this.location) params.location = this.location
+        else {
+          params.latitude = position.coords.latitude
+          params.longitude = position.coords.longitude
+        }
+
+        this.$activitiesService.find(params)
           .then((activities) => {
             this.loading = false
             this.found = activities
@@ -184,8 +212,6 @@ export default {
     onSelectActivity(i, activity) {
       if (this.isViewing) this.$delete(this.selected, i)
       else this.selected.push(activity)
-
-      console.log(this.selected)
 
       this.$emit('input', this.selected)
       this.search = ''

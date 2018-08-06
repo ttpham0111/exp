@@ -25,6 +25,40 @@ class ExperiencesService {
     })
   }
 
+  getTop() {
+    return axios.get('/api/experiences')
+      .then(res => res.data)
+      .then(experiences => {
+        experiences = experiences.map(exp => new Experience(exp))
+        store.commit('Experiences/top', experiences)
+        return this.state.topExperiences
+      })
+  }
+
+  getTopId(experienceId) {
+    return Promise.resolve(this.state.topExperiencesById[experienceId])
+  }
+
+  getComments(experienceId) {
+    return axios.get('/api/experiences/' + experienceId + '/comments')
+      .then(res => res.data)
+  }
+
+  addComment(experienceId, comment) {
+    return UserService.getAuthHeader()
+      .then(headers => {
+        return axios.post(
+          '/api/experiences/' + experienceId + '/comments',
+          {text: comment},
+          {headers: headers}
+        ).then(res => res.data)
+          .then(comment => {
+            comment.owner = UserService.get().displayName
+            return comment
+          })
+      })
+  }
+
   get(refresh) {
     if (refresh || !this.initialized) {
       return UserService.getAuthHeader()

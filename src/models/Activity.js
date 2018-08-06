@@ -8,10 +8,10 @@ Object.freeze(ActivityType)
 export { ActivityType }
 
 const ActivitySource = {
-  USER: 'User',
-  YELP: 'Yelp',
-  EVENTBRITE: 'Eventbrite',
-  GOOGLE: 'Google'
+  USER: 'u0ser',
+  YELP: 'yelp',
+  EVENTBRITE: 'eventbrite',
+  GOOGLE: 'google'
 }
 Object.freeze(ActivitySource)
 export { ActivitySource }
