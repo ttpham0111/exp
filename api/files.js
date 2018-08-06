@@ -10,24 +10,10 @@ const fs = require('fs')
 
 const router = express.Router()
 
-const staticDir = path.join(__dirname, '..', 'static', 'experiences')
+const staticDir = path.join(__dirname, '..', 'dist', 'static', 'experiences')
 const staticUrl = '/static/experiences'
 
-function ls(dirname) {
-  fs.readdir(dirname, (err, files) => {
-    if (err) console.log(err)
-    else {
-      files.forEach(file => {
-        console.log(dirname, file)
-      })
-    }
-  })
-}
-
 router.post('/', (req, res) => {
-  ls('./dist')
-  ls(path.join(staticDir, 'img', 'qgkGjEZegxVxHrJpgin2vwJPFXH2'))
-
   // TODO: Move to middleware, check exists, error handle
   admin.auth().verifyIdToken(req.header('Authorization').split(' ')[1])
     .then(userData => {
