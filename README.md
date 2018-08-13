@@ -1,30 +1,8 @@
-# exp
+EXP: Experience, Explore, Express
+=================================
+EXP is a platform for creating short day/weekend trips. The goal is to create a social experience around exploring local destinations. You can build an itinerary, share with your friends, and explore experiences others have enjoyed.
 
-> EXP: Experience, Explore, Express
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+Screenshots
+-----------
+![Splash](screenshots/Splash.png?raw=true "Splash")
+Home page showing top rated Experiences. This view allows users to quickly be inspired by Experiences created by others.
