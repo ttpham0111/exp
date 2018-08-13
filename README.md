@@ -16,6 +16,6 @@ Users can view Activities related to an Experience and socialize about their own
 ![Edit](screenshots/Edit.png?raw=true "Edit")
 Users can create their own Experience. Experiences can be managed by many users and contain tags. Experiences encompass multiple activities.
 
-![Mobile Edit Experience](screenshots/Mobile%20Edit%20Experience.png?raw=true "Mobile Edit Experience")
+![Mobile Edit Experience](screenshots/Mobile%20Edit%20Experience.png?raw=true "Mobile Edit Experience" | width=50%)
 ![Mobile Edit Activities](screenshots/Mobile%20Edit%20Activities.png?raw=true "Mobile Edit Activities")
 The whole web experience is also mobile friendly!
