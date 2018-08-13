@@ -9,13 +9,13 @@ Screenshots
 The home page shows top rated Experiences. This view allows users to quickly be inspired by Experiences created by others.
 
 ### View and Comment
-![View and Comment](screenshots/View\ And\ Comment.png.png?raw=true "View and Comment")
+![View and Comment](screenshots/View%20And%20Comment.png.png?raw=true "View and Comment")
 Users can view Activities related to an Experience and socialize about their own experience.
 
 ### Edit
 ![Edit](screenshots/Edit.png?raw=true "Edit")
 Users can create their own Experience. Experiences can be managed by many users and contain tags. Experiences encompass multiple activities.
 
-![Mobile Edit Experience](screenshots/Mobile\ Edit\ Experience.png?raw=true "Mobile Edit Experience")
-![Mobile Edit Activities](screenshots/Mobile\ Edit\ Activities.png?raw=true "Mobile Edit Activities")
+![Mobile Edit Experience](screenshots/Mobile%20Edit%20Experience.png?raw=true "Mobile Edit Experience")
+![Mobile Edit Activities](screenshots/Mobile%20Edit%20Activities.png?raw=true "Mobile Edit Activities")
 The whole web experience is also mobile friendly!
