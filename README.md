@@ -1,6 +1,8 @@
 EXP: Experience, Explore, Express
 =================================
 EXP is a platform for creating short day/weekend trips. The goal is to create a social experience around exploring local destinations. You can build an itinerary, share with your friends, and explore experiences others have enjoyed.
+
+Backend API at https://github.com/ttpham0111/exp-ose
   
 Screenshots
 -----------
